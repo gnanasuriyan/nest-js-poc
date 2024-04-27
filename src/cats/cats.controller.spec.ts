@@ -4,6 +4,7 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cate.dto';
 import { ListCatDto } from './dto/list-cat.dto';
 import { CatDto } from './dto/cat.dto';
+import { CatsService } from './cats.service';
 
 describe('CatsController', () => {
   let controller: CatsController;
@@ -11,6 +12,7 @@ describe('CatsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CatsController],
+      providers: [CatsService],
     }).compile();
 
     controller = module.get<CatsController>(CatsController);
@@ -39,18 +41,44 @@ describe('CatsController', () => {
   });
 
   it('it should update an existing cat', () => {
-    const dto = new UpdateCatDto();
-    dto.name = 'milo';
-    dto.age = 2;
-    expect(controller.update(1, dto)).toBe('This action update an existing cat');
+    const dto = new CreateCatDto();
+    dto.name = 'Bella';
+    dto.breed = 'Persian';
+    dto.age = 1;
+    const result: CatDto = controller.create(dto);
+    expect(result.id).toBeDefined();
+
+    const updateDto = new UpdateCatDto();
+    updateDto.name = 'milo';
+    updateDto.age = 2;
+    const updatedCat = controller.update(result.id, updateDto);
+    expect(updatedCat).toBeDefined();
+    expect(updatedCat.name).toBe(updateDto.name);
+    expect(updatedCat.age).toBe(updateDto.age);
   });
 
   it('it should delete an existing cat', () => {
-    expect(controller.remove(1)).toBe('This action delete an existing cat');
+    const dto = new CreateCatDto();
+    dto.name = 'Bella';
+    dto.breed = 'Persian';
+    dto.age = 1;
+    const result: CatDto = controller.create(dto);
+    expect(result.id).toBeDefined();
+    expect(controller.remove(result.id)).toBeTruthy();
   });
 
   it('it should return cat details', () => {
-    expect(controller.findOne(1)).toBe('This action return cat details');
+    const dto = new CreateCatDto();
+    dto.name = 'Bella';
+    dto.breed = 'Persian';
+    dto.age = 1;
+    const result: CatDto = controller.create(dto);
+    expect(result).toBeDefined();
+    expect(result.id).toBeDefined();
+    const catResultById = controller.findOne(result.id);
+    expect(catResultById).toBeDefined();
+    expect(catResultById.name).toBe(dto.name);
+    expect(catResultById.age).toBe(dto.age);
   });
   
 });

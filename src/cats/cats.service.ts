@@ -3,6 +3,7 @@ import { ICat } from './interface/cat.interface';
 import { CatDto } from './dto/cat.dto';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cate.dto';
+import { ListCatDto } from './dto/list-cat.dto';
 
 @Injectable()
 export class CatsService {
@@ -20,8 +21,11 @@ export class CatsService {
         return newCat;
     }
 
-    public findAll(): Array<ICat> {
-        return this.cats;
+    public findAll(): ListCatDto {
+        const listCat = new ListCatDto();
+        listCat.list = this.cats;
+        listCat.total = this.cats.length;
+        return listCat;
     }
 
     public findById(id: number): ICat {

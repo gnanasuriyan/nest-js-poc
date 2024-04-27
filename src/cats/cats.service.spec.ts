@@ -35,7 +35,7 @@ describe('CatsService', () => {
 
   it('should return list of all cats', () => {
     const listOfCats = service.findAll();
-    expect(listOfCats.length).toBe(0);
+    expect(listOfCats.total).toBe(0);
     const dto = new CreateCatDto();
     dto.name = 'Bella';
     dto.breed = 'Persian';
@@ -47,7 +47,8 @@ describe('CatsService', () => {
     expect(cat.breed).toBe(dto.breed);
     expect(cat.age).toBe(dto.age);
     const newListOfCats = service.findAll();
-    expect(newListOfCats.length).toBe(1);
+    expect(newListOfCats.total).toBe(1);
+    expect(newListOfCats.list).toBeDefined();
   });
 
   it('should throw error when find cat by unknown is', () => {
@@ -67,7 +68,7 @@ describe('CatsService', () => {
     expect(cat.name).toBe(dto.name);
     expect(cat.breed).toBe(dto.breed);
     expect(cat.age).toBe(dto.age);
-    
+
   });
 
   it('should throw cat not found error while updating unknown cat', () => {

@@ -1,6 +1,6 @@
-import { CatDto } from "./cat.dto";
+import { ICat } from "../interface/cat.interface";
 
 export class ListCatDto {
     total: number;
-    list: Array<CatDto>;
+    list: Array<ICat>;
 }
