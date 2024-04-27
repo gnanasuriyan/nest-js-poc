@@ -1,13 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cate.dto';
+import { ListCatDto } from './dto/list-cat.dto';
+import { CatDto } from './dto/cat.dto';
 
 @Controller('cats')
 export class CatsController {
 
     @Get()
-    findAll(): string {
-        return 'This action returns all cats';
+    findAll(): ListCatDto {
+        const catList = new ListCatDto()
+        catList.list = [];
+        catList.total = 0;
+        return catList;
     }   
 
     @Get(':id')
@@ -16,8 +21,13 @@ export class CatsController {
     }
 
     @Post()
-    create(@Body() createCatDto: CreateCatDto): string {
-        return 'This action add a new cat into list';
+    create(@Body() createCatDto: CreateCatDto): CatDto {
+        const newCat = new CatDto();
+        newCat.id = 1;
+        newCat.name = createCatDto.name;
+        newCat.breed = createCatDto.breed;
+        newCat.age = createCatDto.age;
+        return newCat;
     }
 
     @Put(':id')
