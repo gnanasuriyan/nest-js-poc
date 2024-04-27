@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CatsController } from './cats.controller';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { UpdateCatDto } from './dto/update-cate.dto';
 
 describe('CatsController', () => {
   let controller: CatsController;
@@ -16,26 +18,31 @@ describe('CatsController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('root', () => {
-    it('it should return all cats', () => {
-      expect(controller.findAll()).toBe('This action returns all cats');
-    });
-
-    it('it should add a new cat', () => {
-      expect(controller.create()).toBe('This action add a new cat into list');
-    });
-
-    it('it should update an existing cat', () => {
-      expect(controller.update()).toBe('This action update an existing cat');
-    });
-
-    it('it should delete an existing cat', () => {
-      expect(controller.remove()).toBe('This action delete an existing cat')
-    });
-
-    it('it should return cat details', () => {
-      expect(controller.findOne()).toBe('This action return cat details')
-    });
-    
+  it('it should return all cats', () => {
+    expect(controller.findAll()).toBe('This action returns all cats');
   });
+
+  it('it should add a new cat', () => {
+    const dto = new CreateCatDto()
+    dto.name = 'Bella';
+    dto.breed = 'Persian';
+    dto.age = 1;
+    expect(controller.create(dto)).toBe('This action add a new cat into list');
+  });
+
+  it('it should update an existing cat', () => {
+    const dto = new UpdateCatDto();
+    dto.name = 'milo';
+    dto.age = 2;
+    expect(controller.update(1, dto)).toBe('This action update an existing cat');
+  });
+
+  it('it should delete an existing cat', () => {
+    expect(controller.remove(1)).toBe('This action delete an existing cat')
+  });
+
+  it('it should return cat details', () => {
+    expect(controller.findOne(1)).toBe('This action return cat details')
+  });
+  
 });
